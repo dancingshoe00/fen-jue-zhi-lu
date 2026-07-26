@@ -1,0 +1,453 @@
+:root {
+  --surface: rgba(22, 18, 16, 0.94);
+  --surface-soft: rgba(35, 28, 24, 0.9);
+  --surface-raised: rgba(48, 38, 31, 0.96);
+  --line: rgba(226, 188, 121, 0.2);
+  --line-strong: rgba(226, 188, 121, 0.42);
+  --text: #f2eadc;
+  --text-muted: #b7aa98;
+  --ember: #d9783d;
+  --ember-bright: #f0aa5d;
+  --flame: #55b7a6;
+  --gold: #d8a33f;
+  --danger: #9e4f41;
+  --background_tooltip: #191411;
+}
+
+* {
+  box-sizing: border-box;
+  letter-spacing: 0;
+  font-family: "Microsoft YaHei UI", "Noto Sans CJK SC", "Segoe UI", sans-serif;
+  font-weight: 500;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(216, 163, 63, 0.4) transparent;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--flame);
+  outline-offset: 3px;
+}
+
+html,
+body {
+  min-width: 320px;
+  color: var(--text);
+  --background: #15110f;
+  --color: var(--text);
+  --points: var(--ember-bright);
+  background-color: #15110f;
+}
+
+body {
+  position: relative;
+  background-image:
+    linear-gradient(90deg, rgba(12, 10, 9, 0.34) 0%, rgba(12, 10, 9, 0.42) 48%, rgba(17, 14, 12, 0.9) 51%, rgba(17, 14, 12, 0.98) 100%),
+    url("../assets/imagegen/wutan-training-ground.png");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -8000;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(9, 8, 7, 0.08), rgba(9, 8, 7, 0.48));
+}
+
+h1,
+h2,
+h3,
+b,
+input {
+  font-family: "Microsoft YaHei UI", "Noto Sans CJK SC", "Segoe UI", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 650;
+}
+
+button {
+  color: var(--text);
+}
+
+button,
+.upg,
+.buyable,
+.challenge,
+.milestone,
+.milestoneDone,
+.opt,
+.longUpg,
+.tabButton {
+  border-radius: 6px;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.can:hover,
+.treeNode.can:hover,
+.tile.can:hover,
+.tabButton:hover,
+.link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--line-strong);
+  text-shadow: none;
+}
+
+.locked {
+  color: rgba(242, 234, 220, 0.55);
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(37, 31, 28, 0.9);
+  cursor: not-allowed;
+}
+
+.bought,
+.milestoneDone,
+.challenge.done {
+  color: #eaf8f2;
+  border-color: rgba(85, 183, 166, 0.55);
+  background: rgba(37, 92, 82, 0.86);
+}
+
+#app {
+  min-height: 100%;
+}
+
+.col {
+  min-width: 50%;
+  max-width: 50%;
+  width: 50%;
+  overflow-x: hidden;
+}
+
+.col.right,
+.fullWidth:not(#treeTab):not(.treeOverlay) {
+  color: var(--text);
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: -16px 0 40px rgba(0, 0, 0, 0.24);
+}
+
+.vl {
+  display: none;
+}
+
+.bg,
+.bg2 {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.treeOverlay {
+  color: var(--text);
+}
+
+.treeOverlay > .overlayThing {
+  margin-top: 6px;
+}
+
+#points {
+  color: var(--ember-bright);
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 18px rgba(217, 120, 61, 0.45);
+}
+
+.journey-label {
+  display: inline-block;
+  margin-right: 7px;
+  padding: 2px 7px;
+  color: #1c1714;
+  border-radius: 3px;
+  background: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#version {
+  top: 12px;
+  right: 14px;
+  color: var(--text-muted);
+  text-shadow: none;
+  font-size: 12px;
+}
+
+#optionWheel {
+  top: 14px;
+  left: 14px;
+  width: 36px;
+  height: 36px;
+  opacity: 0.76;
+  filter: sepia(0.3) saturate(0.65) brightness(1.6);
+}
+
+#optionWheel:hover {
+  transform: rotate(45deg);
+}
+
+#info {
+  top: 60px;
+  left: 12px;
+  color: var(--text-muted);
+  -webkit-text-stroke-width: 0;
+  text-shadow: none;
+}
+
+.sideLayers {
+  top: 70px;
+  right: 22px;
+}
+
+.treeNode,
+.treeButton {
+  width: 88px;
+  height: 88px;
+  margin: 8px 16px;
+  color: #201914;
+  border: 2px solid rgba(255, 238, 204, 0.42);
+  border-radius: 50%;
+  font-family: "Microsoft YaHei UI", sans-serif;
+  font-size: 30px;
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08), 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.smallNode {
+  width: 52px;
+  height: 52px;
+  font-size: 20px;
+}
+
+.resetNotify,
+.notify {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(216, 163, 63, 0.18), 0 0 24px rgba(216, 163, 63, 0.34);
+}
+
+.right > div,
+.fullWidth > div {
+  max-width: 100%;
+}
+
+.right .upgTable,
+.fullWidth .upgTable {
+  padding-inline: 12px;
+}
+
+.upgRow {
+  gap: 10px;
+  align-items: stretch;
+}
+
+.upg {
+  width: 150px;
+  min-width: 150px;
+  min-height: 116px;
+  height: auto;
+  padding: 12px 10px;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.buyable {
+  width: 210px;
+  min-width: 210px;
+  height: auto;
+  min-height: 190px;
+  padding: 16px 13px;
+  color: var(--text);
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.challenge {
+  width: 250px;
+  min-width: 250px;
+  height: auto;
+  min-height: 240px;
+  padding: 14px;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.challenge.canComplete {
+  color: #fff3d4;
+  border-color: rgba(216, 163, 63, 0.65);
+  background: rgba(93, 64, 25, 0.9);
+}
+
+.milestone,
+.milestoneDone {
+  width: min(680px, calc(100% - 24px));
+  min-width: 0;
+  height: auto;
+  min-height: 70px;
+  margin: 5px auto;
+  padding: 12px 15px;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+  background: rgba(37, 31, 28, 0.9);
+  line-height: 1.45;
+}
+
+.milestoneDone {
+  color: #e9f7f2;
+  background: rgba(37, 92, 82, 0.78);
+}
+
+.reset {
+  width: min(360px, calc(100% - 32px));
+  height: auto;
+  min-height: 88px;
+  margin: 12px auto 18px;
+  padding: 14px 18px;
+  border: 1px solid var(--line-strong);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.longUpg {
+  width: 130px;
+  height: 42px;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: rgba(217, 120, 61, 0.82);
+}
+
+.opt {
+  width: 130px;
+  height: 86px;
+  padding: 10px;
+  color: var(--text);
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+}
+
+.tabButton {
+  padding: 8px 14px;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+  background: rgba(35, 28, 24, 0.82);
+  font-size: 14px;
+}
+
+.popup-container {
+  top: 16px;
+  right: 18px;
+}
+
+.popup {
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  background: rgba(27, 22, 19, 0.97);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.36);
+}
+
+.link,
+a {
+  color: var(--flame);
+  -webkit-text-stroke-width: 0;
+}
+
+.tooltip {
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--background_tooltip);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+}
+
+img.instant[src*="alchemy-cauldron"] {
+  display: block;
+  width: min(640px, calc(100% - 32px));
+  max-height: 220px;
+  margin: 8px auto 18px;
+  object-fit: cover;
+  object-position: center 62%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+@media (max-width: 1023px) {
+  body {
+    background-image:
+      linear-gradient(rgba(14, 12, 11, 0.58), rgba(14, 12, 11, 0.9)),
+      url("../assets/imagegen/wutan-training-ground.png");
+    background-position: 44% center;
+  }
+
+  .col,
+  .col.left,
+  .col.right {
+    min-width: 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .col.right,
+  .fullWidth:not(#treeTab):not(.treeOverlay) {
+    border-left: 0;
+    background: rgba(22, 18, 16, 0.97);
+  }
+
+  .treeOverlay {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  #points {
+    font-size: 24px;
+  }
+
+  .treeNode,
+  .treeButton {
+    width: 72px;
+    height: 72px;
+    margin: 6px 9px;
+    font-size: 24px;
+  }
+
+  .upg,
+  .buyable,
+  .challenge {
+    width: min(290px, calc(100vw - 30px));
+    min-width: min(290px, calc(100vw - 30px));
+  }
+
+  .milestone,
+  .milestoneDone {
+    width: calc(100% - 16px);
+  }
+
+  .popup-container,
+  .popup {
+    right: 8px;
+    width: min(300px, calc(100vw - 16px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
