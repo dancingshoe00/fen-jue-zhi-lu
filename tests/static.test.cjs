@@ -31,6 +31,12 @@ test("offline ticks generate resources without running automatic actions", () =>
   assert.match(game, /gameLoop\(offlineDiff, false\)/);
 });
 
+test("tree drawing tolerates layers that are still initializing", () => {
+  const canvas = fs.readFileSync(path.join(root, "js", "technical", "canvas.js"), "utf8");
+
+  assert.match(canvas, /if \(!tmp\[layer\]\) continue/);
+});
+
 test("the realm automation toggle controls both resetting and upgrade buying", () => {
   const realm = fs.readFileSync(path.join(root, "js", "layers", "realm.js"), "utf8");
   assert.match(realm, /autoPrestige:\s*function/);
