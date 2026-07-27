@@ -244,17 +244,86 @@ button,
 }
 
 .upg {
+  position: relative;
   width: 150px;
   min-width: 150px;
   min-height: 116px;
   height: auto;
-  padding: 12px 10px;
+  padding: 38px 10px 12px;
   overflow-wrap: anywhere;
   color: var(--text);
   border: 1px solid var(--line);
   background: var(--surface-raised);
   font-size: 11px;
   line-height: 1.45;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.upg::after {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  padding: 3px 7px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.upg.can:not(.bought) {
+  border-color: rgba(240, 170, 93, 0.78);
+  box-shadow: inset 0 0 0 1px rgba(240, 170, 93, 0.12), 0 0 16px rgba(217, 120, 61, 0.16);
+}
+
+.upg.can:not(.bought)::after {
+  content: "可修炼";
+  color: #25170e;
+  border-color: rgba(255, 221, 174, 0.62);
+  background: var(--ember-bright);
+}
+
+.upg.locked:not(.bought) {
+  color: rgba(242, 234, 220, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.upg.locked:not(.bought)::after {
+  content: "资源不足";
+  color: rgba(242, 234, 220, 0.62);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(13, 11, 10, 0.52);
+}
+
+.upg.bought {
+  color: #eaf8f2;
+  border-color: rgba(85, 183, 166, 0.82);
+  background: rgba(30, 84, 75, 0.94);
+  box-shadow: inset 0 0 0 1px rgba(167, 235, 222, 0.14), 0 0 18px rgba(85, 183, 166, 0.16);
+  animation: upgrade-acquired 260ms ease-out;
+}
+
+.upg.bought::after {
+  content: "已掌握";
+  color: #10241f;
+  border-color: rgba(202, 247, 237, 0.62);
+  background: #83d7c5;
+}
+
+@keyframes upgrade-acquired {
+  0% {
+    transform: scale(0.96);
+  }
+
+  60% {
+    transform: scale(1.025);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .buyable {

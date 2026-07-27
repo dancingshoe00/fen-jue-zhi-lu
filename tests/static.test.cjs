@@ -68,6 +68,17 @@ test("realm upgrades and milestones use separate tabs", () => {
   assert.doesNotMatch(milestonesTab, /"upgrades"/);
 });
 
+test("upgrade buttons expose clear purchase states", () => {
+  const theme = fs.readFileSync(path.join(root, "css", "doupo-theme.css"), "utf8");
+  const index = fs.readFileSync(path.join(root, "index.html"), "utf8");
+
+  assert.match(theme, /\.upg\.can:not\(\.bought\)::after[\s\S]*content:\s*"可修炼"/);
+  assert.match(theme, /\.upg\.locked:not\(\.bought\)::after[\s\S]*content:\s*"资源不足"/);
+  assert.match(theme, /\.upg\.bought::after[\s\S]*content:\s*"已掌握"/);
+  assert.match(theme, /\.upg\.bought\s*\{[\s\S]*animation:\s*upgrade-acquired/);
+  assert.match(index, /css\/doupo-theme\.css\?v=[^"']+/);
+});
+
 test("custom mod files are parser loaded in their declared order", () => {
   const index = fs.readFileSync(path.join(root, "index.html"), "utf8");
   const scriptSources = [
