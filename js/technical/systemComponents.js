@@ -52,11 +52,11 @@ var systemComponents = {
       v-if="tmp[layer].tooltip != ''"
 			:text="(tmp[layer].isLayer) ? (
 				player[layer].unlocked ? (tmp[layer].tooltip ? tmp[layer].tooltip : formatWhole(player[layer].points) + ' ' + tmp[layer].resource)
-				: (tmp[layer].tooltipLocked ? tmp[layer].tooltipLocked : 'Reach ' + formatWhole(tmp[layer].requires) + ' ' + tmp[layer].baseResource + ' to unlock (你有 ' + formatWhole(tmp[layer].baseAmount) + ' ' + tmp[layer].baseResource + ')')
+				: (tmp[layer].tooltipLocked ? tmp[layer].tooltipLocked : '需要 ' + formatWhole(tmp[layer].requires) + ' ' + tmp[layer].baseResource + ' 解锁（当前 ' + formatWhole(tmp[layer].baseAmount) + ' ' + tmp[layer].baseResource + '）')
 			)
 			: (
-				tmp[layer].canClick ? (tmp[layer].tooltip ? tmp[layer].tooltip : 'I am a button!')
-				: (tmp[layer].tooltipLocked ? tmp[layer].tooltipLocked : 'I am a button!')
+				tmp[layer].canClick ? (tmp[layer].tooltip ? tmp[layer].tooltip : '可以点击')
+				: (tmp[layer].tooltipLocked ? tmp[layer].tooltipLocked : '暂不可用')
 			)"></tooltip>
 			<node-mark :layer='layer' :data='tmp[layer].marked'></node-mark></span>
 		</button>
@@ -106,17 +106,17 @@ var systemComponents = {
 		template: `			
 		<div class="overlayThing" style="padding-bottom:7px; width: 90%; z-index: 1000; position: relative">
 		<span v-if="player.devSpeed && player.devSpeed != 1" class="overlayThing">
-			<br>Dev Speed: {{format(player.devSpeed)}}x<br>
+			<br>调试速度：{{format(player.devSpeed)}} 倍<br>
 		</span>
 		<span v-if="player.offTime !== undefined"  class="overlayThing">
-			<br>Offline Time: {{formatTime(player.offTime.remain)}}<br>
+			<br>离线时间：{{formatTime(player.offTime.remain)}}<br>
 		</span>
 		<br>
 		<span v-if="player.points.lt('1e1000')"  class="overlayThing">你有 </span>
 		<h2  class="overlayThing" id="points">{{format(player.points)}}</h2>
 		<span v-if="player.points.lt('1e1e6')"  class="overlayThing"> {{modInfo.pointsName}}</span>
 		<br>
-		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " OOM" + (tmp.other.oompsMag < 0 ? "^OOM" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") + "s" : formatSmall(getPointGen())}}/s)</span>
+		<span v-if="canGenPoints()"  class="overlayThing">({{tmp.other.oompsMag != 0 ? format(tmp.other.oomps) + " 数量级" + (tmp.other.oompsMag < 0 ? "（超阶）" : tmp.other.oompsMag > 1 ? "^" + tmp.other.oompsMag : "") : formatSmall(getPointGen())}}/秒)</span>
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 	</div>
 	`
@@ -133,14 +133,14 @@ var systemComponents = {
             作者： {{modInfo.author}}	
         </span>
         <br>
-        The Modding Tree {{TMT_VERSION.tmtNum}} · Acamaeda
+        模组树引擎（The Modding Tree）{{TMT_VERSION.tmtNum}} · Acamaeda
         <br>
-        The Prestige Tree made by Jacorb and Aarex
+		声望树原作（The Prestige Tree）：Jacorb、Aarex
 		<br><br>
 		<div class="link" onclick="showTab('changelog-tab')">更新记录</div><br>
 		本地非商业同人项目 · 断网可运行
 		<br><br>
-        已游玩时间: {{ formatTime(player.timePlayed) }}<br><br>
+        已游玩时间：{{ formatTime(player.timePlayed) }}<br><br>
         <h3>热键</h3><br>
         <span v-for="key in hotkeys" v-if="player[key.layer].unlocked && tmp[key.layer].hotkeys[key.id].unlocked"><br>{{key.description}}</span></div>
     `
@@ -151,23 +151,26 @@ var systemComponents = {
         <table>
             <tr>
                 <td><button class="opt" onclick="save()">保存</button></td>
-                <td><button class="opt" onclick="toggleOpt('autosave')">自动保存: {{ options.autosave?"开":"关" }}</button></td>
-                <td><button class="opt" onclick="hardReset()">硬复位</button></td>
+                <td><button class="opt" onclick="toggleOpt('autosave')">自动保存：{{ options.autosave?"开":"关" }}</button></td>
+                <td></td>
             </tr>
             <tr>
                 <td><button class="opt" onclick="exportSave()">导出到剪切板</button></td>
                 <td><button class="opt" onclick="importSave()">导入</button></td>
-                <td><button class="opt" onclick="toggleOpt('offlineProd')">离线进度: {{ options.offlineProd?"开":"关" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('offlineProd')">离线进度：{{ options.offlineProd?"开":"关" }}</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="switchTheme()">主题: {{ getThemeName() }}</button></td>
-                <td><button class="opt" onclick="adjustMSDisp()">显示里程碑: {{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
-                <td><button class="opt" onclick="toggleOpt('hqTree')">高质量树贴图: {{ options.hqTree?"开":"关" }}</button></td>
+                <td><button class="opt" onclick="switchTheme()">主题：{{ getThemeName() }}</button></td>
+                <td><button class="opt" onclick="adjustMSDisp()">显示里程碑：{{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
+                <td><button class="opt" onclick="toggleOpt('hqTree')">高质量树贴图：{{ options.hqTree?"开":"关" }}</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="toggleOpt('hideChallenges')">已完成的挑战: {{ options.hideChallenges?"隐藏":"显示" }}</button></td>
-                <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">单标签页模式: {{ options.forceOneTab?"总是":"自动" }}</button></td>
-			</tr> 
+                <td><button class="opt" onclick="toggleOpt('hideChallenges')">已完成的挑战：{{ options.hideChallenges?"隐藏":"显示" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">单标签页模式：{{ options.forceOneTab?"总是":"自动" }}</button></td>
+			</tr>
+            <tr>
+                <td colspan="3"><button class="opt dangerOpt" onclick="hardReset()">清除存档并重开（不可恢复）</button></td>
+            </tr>
         </table>`
     },
 

@@ -203,6 +203,15 @@ button,
   right: 22px;
 }
 
+.sideLayers .treeNode {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
 .treeNode,
 .treeButton {
   width: 88px;
@@ -249,17 +258,21 @@ button,
   min-width: 150px;
   min-height: 116px;
   height: auto;
-  padding: 38px 10px 12px;
+  padding: 12px 10px;
   overflow-wrap: anywhere;
   color: var(--text);
   border: 1px solid var(--line);
   background: var(--surface-raised);
   font-size: 11px;
   line-height: 1.45;
-  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
 }
 
-.upg::after {
+.upg[id^="upgrade-"] {
+  padding: 38px 10px 12px;
+}
+
+.upg[id^="upgrade-"]::after {
   position: absolute;
   top: 9px;
   right: 9px;
@@ -272,58 +285,47 @@ button,
   pointer-events: none;
 }
 
-.upg.can:not(.bought) {
+.upg[id^="upgrade-"].can:not(.bought) {
   border-color: rgba(240, 170, 93, 0.78);
   box-shadow: inset 0 0 0 1px rgba(240, 170, 93, 0.12), 0 0 16px rgba(217, 120, 61, 0.16);
 }
 
-.upg.can:not(.bought)::after {
+.upg.can:hover {
+  transform: none !important;
+}
+
+.upg[id^="upgrade-"].can:not(.bought)::after {
   content: "可修炼";
   color: #25170e;
   border-color: rgba(255, 221, 174, 0.62);
   background: var(--ember-bright);
 }
 
-.upg.locked:not(.bought) {
+.upg[id^="upgrade-"].locked:not(.bought) {
   color: rgba(242, 234, 220, 0.5);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: none;
 }
 
-.upg.locked:not(.bought)::after {
+.upg[id^="upgrade-"].locked:not(.bought)::after {
   content: "资源不足";
   color: rgba(242, 234, 220, 0.62);
   border-color: rgba(255, 255, 255, 0.1);
   background: rgba(13, 11, 10, 0.52);
 }
 
-.upg.bought {
+.upg[id^="upgrade-"].bought {
   color: #eaf8f2;
   border-color: rgba(85, 183, 166, 0.82);
   background: rgba(30, 84, 75, 0.94);
   box-shadow: inset 0 0 0 1px rgba(167, 235, 222, 0.14), 0 0 18px rgba(85, 183, 166, 0.16);
-  animation: upgrade-acquired 260ms ease-out;
 }
 
-.upg.bought::after {
+.upg[id^="upgrade-"].bought::after {
   content: "已掌握";
   color: #10241f;
   border-color: rgba(202, 247, 237, 0.62);
   background: #83d7c5;
-}
-
-@keyframes upgrade-acquired {
-  0% {
-    transform: scale(0.96);
-  }
-
-  60% {
-    transform: scale(1.025);
-  }
-
-  100% {
-    transform: scale(1);
-  }
 }
 
 .buyable {
@@ -403,6 +405,22 @@ button,
   color: var(--text);
   border: 1px solid var(--line);
   background: var(--surface-raised);
+}
+
+.dangerOpt {
+  width: min(300px, calc(100vw - 32px));
+  height: 54px;
+  margin-top: 22px;
+  color: #ffe8e2;
+  border-color: rgba(158, 79, 65, 0.78);
+  background: rgba(92, 36, 33, 0.92);
+}
+
+.dangerOpt:hover,
+.dangerOpt:focus {
+  transform: none;
+  border-color: #d98675;
+  box-shadow: 0 0 0 2px rgba(158, 79, 65, 0.24);
 }
 
 .tabButton {

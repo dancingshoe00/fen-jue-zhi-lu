@@ -72,6 +72,7 @@ addLayer("alchemy", {
   requires: new Decimal(180),
   type: "normal",
   exponent: 0.5,
+  resetDescription: "总结炼药（会重置低层），可得：",
   branches: ["realm", "technique"],
   startData: function () {
     return {

@@ -228,7 +228,7 @@ function loadOptions() {
 
 function setupModInfo() {
 	modInfo.changelog = changelog;
-	modInfo.winText = winText ? winText : `Congratulations! You have reached the end and beaten this game, but for now...`;
+	modInfo.winText = winText ? winText : `恭喜，你已经完成当前阶段。`;
 
 }
 function fixNaNs() {
@@ -245,7 +245,7 @@ function NaNcheck(data) {
 			if (!NaNalert) {
 				clearInterval(interval);
 				NaNalert = true;
-				alert("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
+				alert("存档中发现无效数值，字段为“" + item + "”。请刷新页面恢复最近一次有效存档，并将问题反馈给作者。")
 				return
 			}
 		}
@@ -270,10 +270,12 @@ function exportSave() {
 }
 function importSave(imported = undefined, forced = false) {
 	if (imported === undefined)
-		imported = prompt("Paste your save here");
+		imported = prompt("请粘贴存档内容");
 	try {
 		tempPlr = Object.assign(getStartPlayer(), JSON.parse(atob(imported)));
-		if (tempPlr.versionType != modInfo.id && !forced && !confirm("This save appears to be for a different mod! Are you sure you want to import?")) // Wrong save (use "Forced" to force it to accept.)
+		if (tempPlr.versionType != modInfo.id && !forced && !confirm("该存档似乎属于其他模组，仍要导入吗？"))
+			return;
+		if (!forced && !confirm("导入后将覆盖当前存档，是否继续？"))
 			return;
 		player = tempPlr;
 		player.versionType = modInfo.id;
@@ -283,6 +285,7 @@ function importSave(imported = undefined, forced = false) {
 		save();
 		window.location.reload();
 	} catch (e) {
+		alert("存档内容无效或已损坏，未执行导入。")
 		return;
 	}
 }

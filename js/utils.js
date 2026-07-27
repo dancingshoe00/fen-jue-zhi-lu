@@ -3,7 +3,7 @@
 function respecBuyables(layer) {
 	if (!layers[layer].buyables) return
 	if (!layers[layer].buyables.respec) return
-	if (!player[layer].noRespecConfirm && !confirm(tmp[layer].buyables.respecMessage || "Are you sure you want to respec? This will force you to do a \"" + (tmp[layer].name ? tmp[layer].name : layer) + "\" reset as well!")) return
+	if (!player[layer].noRespecConfirm && !confirm(tmp[layer].buyables.respecMessage || "确定要重置加点吗？这也会触发一次“" + (tmp[layer].name ? tmp[layer].name : layer) + "”重置。")) return
 	run(layers[layer].buyables.respec, layers[layer].buyables)
 	updateBuyableTemp(layer)
 	document.activeElement.blur()
@@ -260,7 +260,7 @@ function updateMilestones(layer) {
 		if (!(hasMilestone(layer, id)) && layers[layer].milestones[id].done()) {
 			player[layer].milestones.push(id)
 			if (layers[layer].milestones[id].onComplete) layers[layer].milestones[id].onComplete()
-			if (tmp[layer].milestonePopups || tmp[layer].milestonePopups === undefined) doPopup("milestone", tmp[layer].milestones[id].requirementDescription, "Milestone Gotten!", 3, tmp[layer].color);
+			if (tmp[layer].milestonePopups || tmp[layer].milestonePopups === undefined) doPopup("milestone", tmp[layer].milestones[id].requirementDescription, "里程碑达成", 3, tmp[layer].color);
 			player[layer].lastMilestone = id
 		}
 	}
@@ -271,7 +271,7 @@ function updateAchievements(layer) {
 		if (isPlainObject(layers[layer].achievements[id]) && !(hasAchievement(layer, id)) && layers[layer].achievements[id].done()) {
 			player[layer].achievements.push(id)
 			if (layers[layer].achievements[id].onComplete) layers[layer].achievements[id].onComplete()
-			if (tmp[layer].achievementPopups || tmp[layer].achievementPopups === undefined) doPopup("achievement", tmp[layer].achievements[id].name, "Achievement Gotten!", 3, tmp[layer].color);
+			if (tmp[layer].achievementPopups || tmp[layer].achievementPopups === undefined) doPopup("achievement", tmp[layer].achievements[id].name, "成就达成", 3, tmp[layer].color);
 		}
 	}
 }
@@ -357,18 +357,18 @@ var activePopups = [];
 var popupID = 0;
 
 // Function to show popups
-function doPopup(type = "none", text = "This is a test popup.", title = "", timer = 3, color = "") {
+function doPopup(type = "none", text = "这是一条测试提示。", title = "", timer = 3, color = "") {
 	switch (type) {
 		case "achievement":
-			popupTitle = "Achievement Unlocked!";
+			popupTitle = "成就达成";
 			popupType = "achievement-popup"
 			break;
 		case "challenge":
-			popupTitle = "Challenge Complete";
+			popupTitle = "挑战完成";
 			popupType = "challenge-popup"
 			break;
 		default:
-			popupTitle = "Something Happened?";
+			popupTitle = "提示";
 			popupType = "default-popup"
 			break;
 	}

@@ -35,6 +35,7 @@ addLayer("technique", {
   type: "static",
   base: 2.5,
   exponent: 1.15,
+  resetDescription: "参悟功法，可得：",
   roundUpCost: true,
   startData: function () {
     return {
@@ -81,16 +82,21 @@ addLayer("technique", {
       title: "散功重修",
       display: function () {
         if (!player.technique.branch) return "先选择一条功法路线。";
-        return `退还 ${formatWhole(techniqueRefund())} 功法感悟并重新选择路线。`;
+        return `将退还 ${formatWhole(techniqueRefund())} 功法感悟，并清空当前路线与全部功法升级。`;
       },
       canClick: function () { return Boolean(player.technique.branch); },
       onClick: function () {
-        if (!confirm("散去当前功法路线并退还已花费的功法感悟？")) return;
+        if (!confirm("散功重修不可撤销。确定清空当前路线与全部功法升级，并退还已花费的功法感悟吗？")) return;
         player.technique.points = player.technique.points.add(techniqueRefund());
         player.technique.upgrades = [];
         player.technique.branch = null;
       },
-      style: { "border-color": "rgba(255,255,255,.18)" }
+      style: {
+        "color": "#ffe8e2",
+        "border-color": "rgba(158,79,65,.82)",
+        "background": "rgba(92,36,33,.92)",
+        "box-shadow": "0 0 0 1px rgba(158,79,65,.24)"
+      }
     }
   },
   hotkeys: [
@@ -105,18 +111,32 @@ addLayer("technique", {
   tooltip: function () {
     return `${formatWhole(player.technique.points)} 功法感悟`;
   },
-  tabFormat: [
-    ["display-text", function () { return "消耗当前修为磨炼功法与斗技，不会清空斗气或境界层。两条路线只是训练侧重，可随时重修并全额退还升级花费。"; }, { "max-width": "680px", "margin": "0 auto", "color": "var(--text-muted)" }],
-    "main-display",
-    "prestige-button",
-    "resource-display",
-    "blank",
-    ["display-text", function () {
-      const branch = DOUPO_CONTENT.technique.branches.find(function (item) { return item.id === player.technique.branch; });
-      return branch ? `当前路线：<b>${branch.title}</b> · ${branch.description}` : "尚未选择功法路线";
-    }],
-    "clickables",
-    "blank",
-    "upgrades"
-  ]
+  tabFormat: {
+    "功法修炼": {
+      content: [
+        ["display-text", function () { return "消耗当前修为磨炼功法与斗技，不会清空斗气或境界层。路线选择只决定当前训练侧重。"; }, { "max-width": "680px", "margin": "0 auto", "color": "var(--text-muted)" }],
+        "main-display",
+        "prestige-button",
+        "resource-display",
+        "blank",
+        ["display-text", function () {
+          const branch = DOUPO_CONTENT.technique.branches.find(function (item) { return item.id === player.technique.branch; });
+          return branch ? `当前路线：<b>${branch.title}</b> · ${branch.description}` : "尚未选择功法路线";
+        }],
+        ["row", [
+          ["clickable", 11, { "margin": "0 6px" }],
+          ["clickable", 12, { "margin": "0 6px" }]
+        ]],
+        "blank",
+        "upgrades"
+      ]
+    },
+    "散功重修": {
+      content: [
+        ["display-text", function () { return "危险操作：散功会清空当前路线与全部功法升级，并全额退还已花费的功法感悟。此操作不可撤销。"; }, { "display": "block", "width": "min(620px, calc(100% - 32px))", "margin": "24px auto 8px", "padding": "16px", "line-height": "1.6", "color": "#ffe8e2", "border": "1px solid rgba(158,79,65,.72)", "border-radius": "6px", "background": "rgba(92,36,33,.42)" }],
+        ["blank", "24px"],
+        ["clickable", 21, { "margin": "12px auto" }]
+      ]
+    }
+  }
 });

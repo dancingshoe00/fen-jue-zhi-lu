@@ -228,7 +228,7 @@ function doReset(layer, force=false) {
 }
 
 function resetRow(row) {
-	if (prompt('Are you sure you want to reset this row? It is highly recommended that you wait until the end of your current run before doing this! Type "I WANT TO RESET THIS" to confirm')!="I WANT TO RESET THIS") return
+	if (prompt('确定要重置这一行吗？建议等待本轮结束后再操作。请输入“确认重置”继续。')!="确认重置") return
 	let pre_layers = ROW_LAYERS[row-1]
 	let layers = ROW_LAYERS[row]
 	let post_layers = ROW_LAYERS[row+1]
@@ -247,9 +247,11 @@ function startChallenge(layer, x) {
 	let enter = false
 	if (!player[layer].unlocked) return
 	if (player[layer].activeChallenge == x) {
+		if (!canCompleteChallenge(layer, x) && !confirm("提前退出试炼会重置当前层及低层临时进度，是否继续？")) return
 		completeChallenge(layer, x)
 		Vue.set(player[layer], "activeChallenge", null)
 		} else {
+		if (!confirm("开始试炼会重置当前层及低层临时进度，是否继续？")) return
 		enter = true
 	}	
 	doReset(layer, true)
@@ -306,7 +308,7 @@ function completeChallenge(layer, x) {
 	updateChallengeTemp(layer)
 }
 
-VERSION.withoutName = "v" + VERSION.num + (VERSION.pre ? " Pre-Release " + VERSION.pre : VERSION.pre ? " Beta " + VERSION.beta : "")
+VERSION.withoutName = "v" + VERSION.num + (VERSION.pre ? " 预览版 " + VERSION.pre : VERSION.beta ? " 测试版 " + VERSION.beta : "")
 VERSION.withName = VERSION.withoutName + (VERSION.name ? ": " + VERSION.name : "")
 
 
@@ -385,7 +387,7 @@ function gameLoop(diff, automaticActions = true) {
 }
 
 function hardReset(resetOptions) {
-	if (!confirm("你确定要硬复位吗？你会丢失所有数据！")) return
+	if (!confirm("清除存档后无法恢复。确定要删除全部游戏进度并重新开始吗？")) return
 	player = null
 	if(resetOptions) options = null
 	save(true);

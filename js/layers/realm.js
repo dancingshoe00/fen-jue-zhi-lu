@@ -43,6 +43,9 @@ addLayer("realm", {
   requires: new Decimal(DOUPO_BALANCE.REALM_RESET_REQUIREMENT),
   type: "normal",
   exponent: 0.5,
+  resetDescription: "凝练斗气，可得：",
+  showBest: false,
+  showTotal: false,
   startData: function () {
     return {
       unlocked: true,
@@ -109,7 +112,6 @@ addLayer("realm", {
         ["display-text", function () { return "将散乱斗气凝成可反复利用的修为。每次凝练都会清空当前斗气与未受里程碑保护的境界升级。"; }, { "max-width": "680px", "margin": "0 auto", "color": "var(--text-muted)" }],
         "main-display",
         "prestige-button",
-        "resource-display",
         "blank",
         "upgrades"
       ]
@@ -117,9 +119,7 @@ addLayer("realm", {
     "修炼里程碑": {
       content: [
         ["display-text", function () { return "累计修为会留下永久进境。里程碑不会因后续重置而失去，并会逐步保护境界升级。"; }, { "max-width": "680px", "margin": "0 auto", "color": "var(--text-muted)" }],
-        "main-display",
-        "prestige-button",
-        "resource-display",
+        ["display-text", function () { return `累计修为：<b>${formatWhole(player.realm.total)}</b>`; }, { "margin": "14px auto 4px", "font-size": "15px", "color": "var(--ember-bright)" }],
         "blank",
         "milestones"
       ]

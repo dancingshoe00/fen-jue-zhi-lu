@@ -45,10 +45,10 @@ function format(decimal, precision = 2, small) {
     decimal = new Decimal(decimal)
     if (isNaN(decimal.sign) || isNaN(decimal.layer) || isNaN(decimal.mag)) {
         player.hasNaN = true;
-        return "NaN"
+        return "数值错误"
     }
     if (decimal.sign < 0) return "-" + format(decimal.neg(), precision)
-    if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
+    if (decimal.mag == Number.POSITIVE_INFINITY) return "无限"
     if (decimal.gte("eeee1000")) {
         var slog = decimal.slog()
         if (slog.gte(1e6)) return "F" + format(slog.floor())
